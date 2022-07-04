@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
-	"time"
-	"fmt"
 	"os"
+	"time"
 )
 
 type Handler struct {
@@ -25,7 +25,7 @@ func main() {
 	router.HandleFunc("/test", hand.Test).Methods("GET")
 
 	srv := &http.Server{
-		Addr:         os.Getenv("HOST") + ":8080",
+		Addr:         ":8080",
 		Handler:      router,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
@@ -33,7 +33,10 @@ func main() {
 
 	fmt.Println("Server Start")
 
-	srv.ListenAndServe()
+	err := srv.ListenAndServe()
+	if err != nil {
+		fmt.Println("1ERROR: ", err)
+	}
 
 	fmt.Println("Server Stop")
 
